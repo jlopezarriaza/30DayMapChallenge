@@ -1,5 +1,5 @@
-# 30DayMapChallenge - Day 1
-## Day 1: Points
+# 30DayMapChallenge - Day 16
+## Day 16: Choropleth
 **Date**: 01-16-2024
 
 **Theme**: Choropleth
