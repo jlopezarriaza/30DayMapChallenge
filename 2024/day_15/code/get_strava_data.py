@@ -16,7 +16,7 @@ authorization_url = AUTHORIZATION_BASE_URL + "?" + urlencode(params)
 print("Visit the following URL to authorize your application:\n")
 print(authorization_url)
 
-authorization_code = "8042ae06010d4c0a50686ff224e9963f351db193"
+authorization_code = input("Enter the authorization code from the url")
 
 token_params = {
     "client_id": os.environ["STRAVA_CLIENT_ID"],

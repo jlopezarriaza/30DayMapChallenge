@@ -23,10 +23,8 @@ A Python application that creates an interactive visualization of Strava activit
 
 ## Usage
 
-1. Run the authorization script:
-   ```bash
-   python get_strava_data.py
-   ```
+1. Run the authorization script `get_strava_data.py`, this has to be done interactively 
+because the need to get an authorization code from the url in strava.    
 2. Visit the authorization URL when prompted
 3. Copy the authorization code and update the script
 4. The script will generate an `activities_map.html` file with your visualized activities
