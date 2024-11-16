@@ -1,4 +1,13 @@
-# 30DayMapChallenge - Strava Activities Visualization
+# 30DayMapChallenge - Day 1
+## Day 15: My data
+
+**Date**: 15-11-2024
+
+**Theme**: My data
+
+**Description**: Map something personal. Map data from your own life—this could be places you’ve traveled, your daily routine, or any other personal touch. 
+
+### Strava Activities Visualization
 
 A Python application that creates an interactive visualization of Strava activities using the Strava API and Folium maps.
 
