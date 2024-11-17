@@ -17,11 +17,11 @@ def get_sf_fire_incidents() -> pd.DataFrame:
     api_params = {
         "$limit": 200000,
         "$offset": 0,
-        "$where": "incident_date >= '2024-01-01' AND incident_date < '2024-12-31'",  
+        "$where": "incident_date >= '2024-01-01' AND incident_date < '2024-12-31'",
     }
     api_response = requests.get(api_endpoint, params=api_params)
     api_response.raise_for_status()
-    incidents_df = pd.DataFrame(api_response.json())
+    incidents_df = pd.DataFrame(api_response.json()).dropna(subset="point")
 
     # Extract latitude and longitude from the 'point' column
     incidents_df["latitude"] = incidents_df["point"].apply(
