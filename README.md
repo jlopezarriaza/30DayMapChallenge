@@ -1,6 +1,15 @@
 # 30DayMapChallenge
 Data, code, and visualization for the 2024 #30DayMapChallenge
 
+## Run with uv
+
+```bash
+uv sync
+uv run python 2024/day_25/code/plot_sf_heat.py
+```
+
+For scripts that need environment variables (for example Strava credentials), create a `.env` file or export variables in your shell before running with `uv run`.
+
 | **Date**       | **Name**                         | **Description**                                                                                                                                                        |
 |----------------|----------------------------------|-----------------------------------------------------|
 | **01-11-2024** | Points                           | 30DayMapChallenge classic: A map with points. Start the challenge with points. Show individual locations—anything from cities to trees or more abstract concepts. Simple, but a key part of the challenge. 📍                                                                                                            |
