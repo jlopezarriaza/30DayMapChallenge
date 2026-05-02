@@ -1,0 +1,29 @@
+[project]
+name = "day-map-challenge-2024"
+version = "0.1.0"
+description = "Code and data visualizations for the 2024 #30DayMapChallenge."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "branca",
+    "cartopy",
+    "folium",
+    "geopandas",
+    "h3",
+    "matplotlib",
+    "networkx",
+    "numpy",
+    "osmnx",
+    "pandas",
+    "plotly",
+    "polyline",
+    "pydeck",
+    "requests",
+    "rtree",
+    "scipy",
+    "seaborn",
+    "shapely",
+]
+
+[tool.uv]
+package = false

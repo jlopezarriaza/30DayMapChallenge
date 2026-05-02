@@ -1,7 +1,5 @@
-# 30DayMapChallenge - Day 16
-## Day 16: Choropleth
-**Date**: 01-16-2024
+# Day 16: Choropleth
+A choropleth map of SF planted trees by zipcode.
 
-**Theme**: Choropleth
-
-**Description**: Classic choropleth map. Use color to show data variation across regions. This simple but effective technique is a staple for showing thematic differences. 
+## Visualization
+[Interactive Visualization](visualization/sf_trees_choropleth.html)
