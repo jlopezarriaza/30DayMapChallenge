@@ -36,11 +36,17 @@ def main():
     
     # Plot SF boundary in very dark gray
     city = ox.geocode_to_gdf("San Francisco, California, USA")
-    city.plot(ax=ax, color='#0a0a0a', edgecolor='#1a1a1a', linewidth=1)
+    city.plot(ax=ax, color='#080808', edgecolor='#1a1a1a', linewidth=1)
     
-    # Plot Raven sightings in dark charcoal with a tiny white center
-    ax.scatter(gdf.geometry.x, gdf.geometry.y, color='#171717', s=100, alpha=0.9, edgecolor='#262626', linewidth=0.5)
-    ax.scatter(gdf.geometry.x, gdf.geometry.y, color='black', s=10, alpha=0.5) # Core of the point
+    # Plot Raven sightings with a sharper, glowing dark aesthetic
+    # Outer glow (deep purple/charcoal)
+    ax.scatter(gdf.geometry.x, gdf.geometry.y, color='#1f1f2e', s=250, alpha=0.4, edgecolor='none')
+    # Inner point (black with a sharp border)
+    ax.scatter(gdf.geometry.x, gdf.geometry.y, color='black', s=40, alpha=0.9, edgecolor='#3b3b4f', linewidth=1.5)
+    
+    # Focus tightly on the SF Peninsula, ignoring the Farallon Islands
+    ax.set_xlim(-122.52, -122.35)
+    ax.set_ylim(37.70, 37.82)
     
     ax.set_axis_off()
     ax.set_title("Day 28: Black - Shadows of the Raven in SF", color='#262626', fontsize=22, pad=20, fontweight='black')
