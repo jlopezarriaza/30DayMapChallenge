@@ -22,48 +22,63 @@ def main():
     
     gdf = gpd.GeoDataFrame(pd.DataFrame(data), geometry=gpd.points_from_xy([d['lon'] for d in data], [d['lat'] for d in data]), crs="EPSG:4326")
     
-    print("Plotting...")
-    fig, ax = plt.subplots(figsize=(12, 12))
-    fig.patch.set_facecolor('#1e293b') # Dark slate blue
-    ax.set_facecolor('#1e293b')
+    location = "San Francisco, California, USA"
+    print("Fetching base layers for context...")
+    # Fetch water and parks for a beautiful basemap
+    water = ox.features_from_place(location, tags={'natural': 'water', 'bay': True})
+    parks = ox.features_from_place(location, tags={'leisure': 'park'})
+    city = ox.geocode_to_gdf(location)
     
-    city = ox.geocode_to_gdf("San Francisco, California, USA")
-    city.plot(ax=ax, color='#334155', edgecolor='#475569', linewidth=1)
+    print("Plotting elevated 10-minute map...")
+    fig, ax = plt.subplots(figsize=(15, 12))
+    fig.patch.set_facecolor('#0f172a') # Deep space navy
+    ax.set_facecolor('#0f172a')
     
-    # Plot top 5 species by count in sample
+    # Plot City Base
+    city.plot(ax=ax, color='#1e293b', edgecolor='#334155', linewidth=1, zorder=1)
+    
+    # Plot Water
+    water.plot(ax=ax, color='#0284c7', alpha=0.3, zorder=2)
+    
+    # Plot Parks
+    parks.plot(ax=ax, color='#15803d', alpha=0.3, zorder=3)
+    
+    # Plot top 5 species by count in sample with glowing effect
     top_5 = gdf['species'].value_counts().head(5).index.tolist()
-    gdf[gdf['species'].isin(top_5)].plot(
+    top_gdf = gdf[gdf['species'].isin(top_5)]
+    
+    # Glow effect
+    top_gdf.plot(ax=ax, column='species', cmap='Set2', markersize=150, alpha=0.2, zorder=4)
+    # Core point
+    top_gdf.plot(
         ax=ax, 
         column='species', 
         cmap='Set2', 
-        markersize=60, 
-        alpha=0.8, 
+        markersize=40, 
+        alpha=0.9, 
         edgecolor='white',
-        linewidth=0.5,
+        linewidth=0.8,
         legend=True,
-        legend_kwds={'loc': 'upper left', 'facecolor': '#1e293b', 'edgecolor': 'none', 'labelcolor': 'white'}
+        legend_kwds={'loc': 'lower left', 'facecolor': '#0f172a', 'edgecolor': '#334155', 'labelcolor': 'white', 'title': 'Top 5 Species', 'title_fontsize': 12},
+        zorder=5
     )
     
-    # Focus tightly on the SF Peninsula, ignoring the Farallon Islands
+    # Fix the legend title color
+    legend = ax.get_legend()
+    if legend:
+        legend.get_title().set_color('white')
+        legend.get_title().set_fontweight('bold')
+    
+    # Focus tightly on the SF Peninsula
     ax.set_xlim(-122.52, -122.35)
     ax.set_ylim(37.70, 37.82)
     
     ax.set_axis_off()
-    ax.set_title("Day 13: 10 Minute Map - Common SF Birds", color='white', fontsize=24, fontweight='bold', pad=20)
+    ax.set_title("Day 13: 10 Minute Map - Common SF Birds", color='white', fontsize=28, fontweight='black', pad=20)
     
     output_path = os.path.join('2025', 'day_13', 'visualization', 'sf_common_birds.png')
-    plt.savefig(output_path, dpi=300, bbox_inches='tight', facecolor='#1e293b')
+    plt.savefig(output_path, dpi=300, bbox_inches='tight', facecolor='#0f172a')
     print(f"Saved to {output_path}")
-    
-    # Save a small README
-    readme_content = f"""# Day 13: 10 minute map
-A rapidly generated map showing a sample of the most common bird species found in San Francisco, based on recent GBIF observations. This map was created in under 10 minutes to demonstrate quick spatial data processing.
-
-## Visualization
-![SF Common Birds](visualization/sf_common_birds.png)
-"""
-    with open(os.path.join('2025', 'day_13', 'README.md'), 'w') as f:
-        f.write(readme_content)
 
 if __name__ == "__main__":
     main()
