@@ -1,5 +1,5 @@
 # Day 29: Raster
-A continuous intensity surface (raster) of bird sightings across the San Francisco Bay Area. This map uses Gaussian smoothing on binned point data from GBIF to visualize regional "hotspots" of avian activity as a continuous field of biodiversity.
+Pushing the boundaries of the challenge, this is an **Acoustic Raster**—a spectrogram visualizing the vocalizations of a bird over time. This approach, heavily utilized in machine learning competitions like **BirdCLEF 2026**, represents time on the X-axis, frequency on the Y-axis, and amplitude via color intensity (magma colormap). The signal features simulated frequency sweeps and a rapid trill characteristic of many songbirds, superimposed over low-frequency background noise.
 
 ## Visualization
-![Bay Area Bird Raster](visualization/bay_area_bird_raster.png)
+![Acoustic Spectrogram](visualization/acoustic_spectrogram.png)
