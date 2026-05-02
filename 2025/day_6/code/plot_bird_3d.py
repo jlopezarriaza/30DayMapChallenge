@@ -52,7 +52,7 @@ def main():
         bearing=0
     )
     
-    r = pdk.Deck(layers=[layer], initial_view_state=view_state, map_style="mapbox://styles/mapbox/dark-v10")
+    r = pdk.Deck(layers=[layer], initial_view_state=view_state, map_style=pdk.map_styles.DARK)
     
     output_path = os.path.join('2025', 'day_6', 'visualization', 'bird_3d_paths.html')
     r.to_html(output_path)
