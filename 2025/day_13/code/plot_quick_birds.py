@@ -24,39 +24,44 @@ def main():
     
     # Filter out Unknown
     gdf = gdf[gdf['species'] != 'Unknown']
-    
-    location = "San Francisco, California, USA"
-    city = ox.geocode_to_gdf(location)
-    
-    # Clip city to remove Farallon Islands and fix aspect ratio
-    from shapely.geometry import box
-    bbox = box(-122.52, 37.70, -122.35, 37.82)
-    city = gpd.clip(city, bbox)
-    
     top_5 = gdf['species'].value_counts().head(5).index.tolist()
     
-    print("Plotting small multiples...")
-    fig, axes = plt.subplots(1, 5, figsize=(20, 5))
-    fig.patch.set_facecolor('#fafaf9') # Off-white
+    print("Fetching base layers...")
+    bbox = (-122.52, 37.70, -122.35, 37.82)
+    # Fetch roads and water
+    water = ox.features_from_bbox(bbox, tags={'natural': 'water', 'bay': True})
+    roads = ox.features_from_bbox(bbox, tags={'highway': ['primary', 'secondary']})
     
-    colors = ['#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6']
+    print("Plotting small multiples...")
+    fig, axes = plt.subplots(1, 5, figsize=(25, 6))
+    bg_color = '#0f172a' # Dark navy
+    fig.patch.set_facecolor(bg_color)
+    
+    colors = ['#f43f5e', '#f59e0b', '#10b981', '#38bdf8', '#8b5cf6']
     
     for i, (species, ax) in enumerate(zip(top_5, axes)):
-        ax.set_facecolor('#fafaf9')
-        city.plot(ax=ax, color='#e2e8f0', edgecolor='#94a3b8', linewidth=0.5)
+        ax.set_facecolor(bg_color)
+        
+        # Plot roads and water
+        roads.plot(ax=ax, color='#1e293b', linewidth=0.5, alpha=0.8)
+        water.plot(ax=ax, color='#0284c7', alpha=0.2)
         
         species_gdf = gdf[gdf['species'] == species]
-        species_gdf.plot(ax=ax, color=colors[i], markersize=15, alpha=0.7)
         
-        ax.set_xlim(-122.52, -122.35)
-        ax.set_ylim(37.70, 37.82)
+        # Glow
+        species_gdf.plot(ax=ax, color=colors[i], markersize=100, alpha=0.2)
+        # Core
+        species_gdf.plot(ax=ax, color=colors[i], markersize=15, alpha=0.9, edgecolor='white', linewidth=0.5)
+        
+        ax.set_xlim(bbox[0], bbox[2])
+        ax.set_ylim(bbox[1], bbox[3])
         ax.set_axis_off()
-        ax.set_title(species, fontsize=14, fontweight='bold', color='#334155', style='italic')
+        ax.set_title(species, fontsize=16, fontweight='bold', color='white', style='italic', pad=15)
         
-    plt.suptitle("Day 13: 10 Minute Map - Small Multiples of Common SF Birds", fontsize=24, fontweight='black', color='#0f172a', y=1.05)
+    plt.suptitle("Day 13: 10 Minute Map - Common SF Birds", fontsize=28, fontweight='black', color='white', y=1.05)
     
     output_path = os.path.join('2025', 'day_13', 'visualization', 'sf_common_birds.png')
-    plt.savefig(output_path, dpi=300, bbox_inches='tight', facecolor='#fafaf9')
+    plt.savefig(output_path, dpi=300, bbox_inches='tight', facecolor=bg_color)
     print(f"Saved to {output_path}")
 
 if __name__ == "__main__":
