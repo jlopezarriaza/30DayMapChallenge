@@ -28,6 +28,11 @@ def main():
     location = "San Francisco, California, USA"
     city = ox.geocode_to_gdf(location)
     
+    # Clip city to remove Farallon Islands and fix aspect ratio
+    from shapely.geometry import box
+    bbox = box(-122.52, 37.70, -122.35, 37.82)
+    city = gpd.clip(city, bbox)
+    
     top_5 = gdf['species'].value_counts().head(5).index.tolist()
     
     print("Plotting small multiples...")

@@ -1,10 +1,14 @@
 import osmnx as ox
 import matplotlib.pyplot as plt
 import os
+import geopandas as gpd
+from shapely.geometry import box
 
 def main():
     print("Fetching bird-related features from OSM in SF...")
-    location = "San Francisco, California, USA"
+    
+    # SF Peninsula Bounding Box (left, bottom, right, top)
+    bbox = (-122.52, 37.70, -122.35, 37.82)
     
     tags = {
         'leisure': 'bird_hide',
@@ -13,13 +17,16 @@ def main():
         'natural': 'nest'
     }
     
-    gdf = ox.features_from_place(location, tags=tags)
+    gdf = ox.features_from_bbox(bbox, tags=tags)
     gdf['centroid'] = gdf.geometry.centroid
     
     print("Fetching blueprint base layers...")
-    water = ox.features_from_place(location, tags={'natural': 'water', 'bay': True})
-    roads = ox.features_from_place(location, tags={'highway': ['primary', 'secondary', 'tertiary']})
+    water = ox.features_from_bbox(bbox, tags={'natural': 'water', 'bay': True})
+    roads = ox.features_from_bbox(bbox, tags={'highway': ['primary', 'secondary', 'tertiary']})
+    
+    location = "San Francisco, California, USA"
     city = ox.geocode_to_gdf(location)
+    city = gpd.clip(city, box(*bbox))
     
     print("Plotting Blueprint style...")
     fig, ax = plt.subplots(figsize=(15, 12))
