@@ -23,19 +23,36 @@ def main():
     gdf = gpd.GeoDataFrame(pd.DataFrame(data), geometry=gpd.points_from_xy([d['lon'] for d in data], [d['lat'] for d in data]), crs="EPSG:4326")
     
     print("Plotting...")
-    fig, ax = plt.subplots(figsize=(10, 10))
+    fig, ax = plt.subplots(figsize=(12, 12))
+    fig.patch.set_facecolor('#1e293b') # Dark slate blue
+    ax.set_facecolor('#1e293b')
+    
     city = ox.geocode_to_gdf("San Francisco, California, USA")
-    city.plot(ax=ax, color='#f1f5f9', edgecolor='#cbd5e1')
+    city.plot(ax=ax, color='#334155', edgecolor='#475569', linewidth=1)
     
     # Plot top 5 species by count in sample
     top_5 = gdf['species'].value_counts().head(5).index.tolist()
-    gdf[gdf['species'].isin(top_5)].plot(ax=ax, column='species', markersize=30, alpha=0.7, legend=True)
+    gdf[gdf['species'].isin(top_5)].plot(
+        ax=ax, 
+        column='species', 
+        cmap='Set2', 
+        markersize=60, 
+        alpha=0.8, 
+        edgecolor='white',
+        linewidth=0.5,
+        legend=True,
+        legend_kwds={'loc': 'upper left', 'facecolor': '#1e293b', 'edgecolor': 'none', 'labelcolor': 'white'}
+    )
+    
+    # Focus tightly on the SF Peninsula, ignoring the Farallon Islands
+    ax.set_xlim(-122.52, -122.35)
+    ax.set_ylim(37.70, 37.82)
     
     ax.set_axis_off()
-    ax.set_title("Day 13: 10 Minute Map - Common SF Birds", fontsize=18, fontweight='bold')
+    ax.set_title("Day 13: 10 Minute Map - Common SF Birds", color='white', fontsize=24, fontweight='bold', pad=20)
     
     output_path = os.path.join('2025', 'day_13', 'visualization', 'sf_common_birds.png')
-    plt.savefig(output_path, dpi=150, bbox_inches='tight')
+    plt.savefig(output_path, dpi=300, bbox_inches='tight', facecolor='#1e293b')
     print(f"Saved to {output_path}")
     
     # Save a small README

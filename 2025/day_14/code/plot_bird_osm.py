@@ -22,26 +22,33 @@ def main():
     
     print("Plotting birding sites...")
     fig, ax = plt.subplots(figsize=(12, 12))
-    fig.patch.set_facecolor('#f8fafc')
-    ax.set_facecolor('#f8fafc')
+    fig.patch.set_facecolor('#0f172a') # Deep navy
+    ax.set_facecolor('#0f172a')
     
     # Plot SF boundary
     city = ox.geocode_to_gdf(location)
-    city.plot(ax=ax, color='#e2e8f0', edgecolor='#94a3b8', linewidth=1)
+    city.plot(ax=ax, color='#1e293b', edgecolor='#334155', linewidth=1)
     
     # Plot bird hides and nests with a vibrant color
-    ax.scatter(gdf['centroid'].x, gdf['centroid'].y, color='#0ea5e9', s=50, alpha=0.8, edgecolor='white', linewidth=0.5, label='Birding Point of Interest')
+    ax.scatter(gdf['centroid'].x, gdf['centroid'].y, color='#0ea5e9', s=100, alpha=0.9, edgecolor='#bae6fd', linewidth=1, label='Birding Point of Interest')
+    
+    # Focus tightly on the SF Peninsula, ignoring the Farallon Islands
+    ax.set_xlim(-122.52, -122.35)
+    ax.set_ylim(37.70, 37.82)
     
     ax.set_axis_off()
-    ax.set_title("Day 14: OSM - Birding Infrastructure in SF", fontsize=22, pad=20, fontweight='bold', color='#0369a1')
+    ax.set_title("Day 14: OSM - Birding Infrastructure in SF", fontsize=24, pad=20, fontweight='bold', color='#38bdf8')
     
     ax.text(0.5, 0.02, "Data: OpenStreetMap contributors | Theme: Birds", 
-            transform=ax.transAxes, ha='center', color='#64748b', fontsize=10)
+            transform=ax.transAxes, ha='center', color='#94a3b8', fontsize=10)
     
-    ax.legend(loc='lower left')
+    # Customize legend for dark background
+    legend = ax.legend(loc='lower left', facecolor='#0f172a', edgecolor='#334155')
+    for text in legend.get_texts():
+        text.set_color('#e2e8f0')
     
     output_path = os.path.join('2025', 'day_14', 'visualization', 'sf_birding_osm.png')
-    plt.savefig(output_path, dpi=300, bbox_inches='tight')
+    plt.savefig(output_path, dpi=300, bbox_inches='tight', facecolor='#0f172a')
     print(f"Saved to {output_path}")
     
     # Save a small README
