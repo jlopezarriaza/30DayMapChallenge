@@ -167,3 +167,6 @@ cython_debug/
 # Local API cache artifacts
 cache/*.json
 2024/day_16/code/sf_trees.csv
+
+# Local secrets / env dumps (never commit)
+**/save_env.py

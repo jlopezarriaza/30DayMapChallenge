@@ -1,5 +1,0 @@
-import os
-
-os.environ["STRAVA_CLIENT_ID"] = "15659"
-os.environ["STRAVA_REFRESH_TOKEN"] = "ed9ac40075b6158c90d18ee952889c628e886023"
-os.environ["STRAVA_CLIENT_SECRET"] = "cf50b9930b29cd22b96d8476ce6fbe12d1c4af06"
